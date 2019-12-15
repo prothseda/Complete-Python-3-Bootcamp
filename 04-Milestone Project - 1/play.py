@@ -135,6 +135,13 @@ while True:
                 game_on = False
                 break
             
+            if full_board_check(game_board):
+                print('\n'*100)
+                print('The game is a draw!')
+                display_board(game_board)
+                game_on = False
+                break
+            
             turn = 2
 
         # Player2's turn.
@@ -154,7 +161,14 @@ while True:
                 display_board(game_board)
                 game_on = False
                 break
-            
+
+            if full_board_check(game_board):
+                print('\n'*100)
+                print('The game is a draw!')
+                display_board(game_board)
+                game_on = False
+                break
+           
             turn = 1
 
     if not replay():
