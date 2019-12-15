@@ -19,7 +19,7 @@ def display_board(board):
 # %%
 def player_input():
     
-    marker = 'null'
+    marker = ''
     while marker not in ('X', 'O'):
         marker = input('Player 1, do you wish to be Naughts (O) or Crosses (X)? ')
     return marker
@@ -79,28 +79,30 @@ def full_board_check(board):
 
 # %%
 def player_choice(board):
-    
-    print()
-    input_position = int(input('Please choose a position as a number of 1 - 9: '))
-
-    if space_check(board,input_position) == True:
-        return input_position        
-
+    while True:
+        try:
+            input_position = int(input('Please choose a position as a number between 1 and 9: '))
+            if space_check(board,input_position) == True:
+                break
+        except ValueError:
+            print('Input value was invalid.')
+        
+    return input_position
 # %%
 # player_choice(test_board)
 
 # %%
 def replay():
     
-    answer = input('Do you wish to play again? Y/N: ').upper
-    return answer in ('Yes', 'Y')
+    answer = input('Do you wish to play again? Y/N: ')
+    return answer == 'Y'
 
 # %%
 print('Welcome to Tic Tac Toe!')
 
 while True:
     # Set the game up here
-    game_board = ['#','','','','','','','','','']
+    game_board = ['#',' ',' ',' ',' ',' ',' ',' ',' ',' ']
 
     # Player 1 chooses their marker, assign the other marker to Player 2.
     player_input()
