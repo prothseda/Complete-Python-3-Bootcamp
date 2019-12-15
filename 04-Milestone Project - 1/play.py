@@ -49,7 +49,7 @@ import random
 
 def choose_first():
     n = random.randint(1,2)
-    print(f'Player {n} goes first!')
+    print(f'Player {n} will make the first move!')
     return n
 
 
@@ -79,13 +79,13 @@ def full_board_check(board):
 
 # %%
 def player_choice(board):
-    while True:
+    input_position = 0
+
+    while input_position not in [1,2,3,4,5,6,7,8,9] or not space_check(board, input_position):
         try:
             input_position = int(input('Please choose a position as a number between 1 and 9: '))
-            if space_check(board,input_position) == True:
-                break
-        except ValueError:
-            print('Input value was invalid.')
+        except:
+            print('Input value was invalid. Please try again.')
         
     return input_position
 # %%
@@ -115,6 +115,7 @@ while True:
     turn = choose_first() 
 
     game_on = True
+    input('Press any key to continue...')
 
     while game_on:
         # Player 1 Turn
