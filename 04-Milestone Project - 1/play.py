@@ -105,7 +105,6 @@ while True:
     game_board = ['#',' ',' ',' ',' ',' ',' ',' ',' ',' ']
 
     # Player 1 chooses their marker, assign the other marker to Player 2.
-    player_input()
     player_1 = player_input()
     if player_1 == 'X':
         player_2 = 'O'
