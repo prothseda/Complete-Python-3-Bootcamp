@@ -69,7 +69,7 @@ while True:
     try:
         input_credit_card = input('Please provide a Credit Card Number: ')
         int(input_credit_card) # Validate that the input string is all numeric
-    except TypeError:
+    except ValueError:
         print(f'{input_credit_card} is an invalid input. Please double-check and try again.')
     except:
         print(f'An unknown error occured.')
