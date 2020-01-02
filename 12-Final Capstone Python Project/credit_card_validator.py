@@ -62,7 +62,7 @@ class LuhnCheck:
 
     def validate(self):
         # Returns True if the credit_card_number passes the LuhnCheck
-        return self.sum_of_all_digits() % 2 == 0
+        return self.sum_of_all_digits() % 10 == 0
 
 # User inputs a Credit Card Number
 while True:
