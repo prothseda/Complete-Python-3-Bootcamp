@@ -6,6 +6,7 @@ ranks = ('Two', 'Three', 'Four', 'Five', 'Six', 'Seven',
 values = {'Two': 2, 'Three': 3, 'Four': 4, 'Five': 5, 'Six': 6, 'Seven': 7,
           'Eight': 8, 'Nine': 9, 'Ten': 10, 'Jack': 10, 'Queen': 10, 'King': 10, 'Ace': 11}
 
+playing = True
 
 class Card:
 
@@ -23,8 +24,7 @@ class Deck:
         self.deck = []
         for suit in suits:
             for rank in ranks:
-                card = Card(suit, rank)
-                self.deck.append(f'{card}')
+                self.deck.append(Card(suit, rank))
 
     def __str__(self):
         return f'{self.deck}'
@@ -80,78 +80,84 @@ def place_bet(chips):
         try:
             bet = int(input('Place your bet: '))
             if chips.total - bet < 0:
-                f'Insufficent chips available.\nBet: {bet}\nAvailable chips: {chips.total}'
+                print(f'Insufficent chips available.\nBet: {bet}\nAvailable chips: {chips.total}')
                 continue
             else:
                 chips.bet = bet
-                f'You bet {bet}.'
+                print(f'You bet {bet}.')
                 break
         except TypeError:
-            f'{bet} is not a valid bet.'
+            print(f'{bet} is not a valid bet.')
         except:
-            f'An unknown error occured. Please try again.'
+            print(f'An unknown error occured. Please try again.')
 
 def hit(deck,hand):
     card_to_add = deck.deal()
     hand.add_card(card_to_add)
     hand.adjust_for_ace
-    print(f'{card_to_add}')
+    print(f'\nDealt {card_to_add}')
 
 def hit_or_stand(deck,hand):
     global playing
 
     while True:
         try:
-            action = input('Would you like to Hit or Stand? ').capitalize()
-            print(f'{action}')
+            action = input('\nWould you like to Hit or Stand? ').capitalize()
         except:
-            f'An error occured. Please try again.'
+            print(f'An error occured. Please try again.')
         else:
             if action in ('Hit', 'Stand'):
                 break
             else:
-                f'Invalid input. Please try again.'
+                print(f'Invalid input. Please try again.')
                 
     if action == 'Hit':
         hit(deck,hand)
     else:
+        print(f'\nPlayer stands with {hand.value}.\nDealer plays...')
         playing = False
+
     
 def show_some_cards(player,dealer):
 
-    print(f"Dealer's hand: <first card is hidden> {dealer.cards[1:]}")
-    print(f"Player's hand: {player.cards}\nPlayer's Value: {player.value}")
+    print(f"\nDealer's hand:\n<Hidden>, {dealer.cards[1]}")
+    print("\nPlayer's hand:")
+    print(*player.cards, sep=', ')
+    print(f"Player's Value: {player.value}")
 
 def show_all_cards(player,dealer):
 
-    print(f"Dealer's hand: {dealer.cards}\nDealer's Value: {dealer.value}")
-    print(f"Player's hand: {player.cards}\nPlayer's Value: {player.value}")
+    print("\nDealer's hand:")
+    print(*dealer.cards, sep=', ')
+    print(f"Dealer's Value: {dealer.value}")
+    print("\nPlayer's hand:")
+    print(*player.cards, sep=', ')
+    print(f"Player's Value: {player.value}")
 
 def player_busts(chips):
     chips.lose_bet()    
-    print(f'Player is bust! Lost {chips.bet}')
+    print(f'\nPlayer is bust! Lost {chips.bet}')
 
 def player_wins(chips):
     chips.win_bet()
-    print(f'Player wins! Won {chips.bet}')
+    print(f'\nPlayer wins! Won {chips.bet}')
     
 def dealer_busts(chips):
     chips.win_bet()
-    print(f'Dealer bust! Player wins {chips.bet}')
+    print(f'\nDealer bust! Player wins {chips.bet}')
 
 def dealer_wins(chips):
     chips.lose_bet()
-    print(f'Dealer Wins! Player lost {chips.bet}')
+    print(f'\nDealer Wins! Player lost {chips.bet}')
 
 def push():
-    print(f'Push! No winning bet.')
+    print(f'\nPush! No winning bet.')
 
 
 while True:
-    playing = True
     # Print an opening statement
-    print(f'Welcome to Blackjack!')
-    input('Please any key to begin.')
+    print(f'\nWelcome to Blackjack!')
+    input('\nPlease any key to begin.')
     
     # Create & shuffle the deck, deal two cards to each player
     playing_deck = Deck()
@@ -226,6 +232,8 @@ while True:
                 continue
     if play_again == 'N':
         break
+    else:
+        playing = True
 
 
 
