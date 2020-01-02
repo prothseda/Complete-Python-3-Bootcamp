@@ -62,7 +62,7 @@ class Hand:
 class Chips:
 
     def __init__(self):
-        self.total = 100
+        self.total = 100.0
         self.bet = 0
 
     def __str__(self):
@@ -78,7 +78,7 @@ def place_bet(chips):
 
     while True:
         try:
-            bet = int(input('Place your bet: '))
+            bet = float(input('Place your bet: '))
             if chips.total - bet < 0:
                 print(f'Insufficent chips available.\nBet: {bet}\nAvailable chips: {chips.total}')
                 continue
@@ -136,11 +136,11 @@ def show_all_cards(player,dealer):
 
 def player_busts(chips):
     chips.lose_bet()    
-    print(f'\nPlayer is bust! Lost {chips.bet}')
+    print(f'\nPlayer is bust! Player lost {chips.bet}')
 
 def player_wins(chips):
     chips.win_bet()
-    print(f'\nPlayer wins! Won {chips.bet}')
+    print(f'\nPlayer wins! Player wins {chips.bet}')
     
 def dealer_busts(chips):
     chips.win_bet()
@@ -152,6 +152,11 @@ def dealer_wins(chips):
 
 def push():
     print(f'\nPush! No winning bet.')
+
+def blackjack(chips):
+    chips.bet = chips.bet * 1.5 # Blackjack wins one and one-half times the bet
+    chips.win_bet()
+    print(f'Player has Blackjack! Player wins {chips.bet}')
 
 
 '''
@@ -187,8 +192,17 @@ while True:
     # Show cards (but keep one dealer card hidden)
     show_some_cards(player_hand,dealer_hand)
     
+    # Check for player Blackjack (can only occur on the two original dealt cards)
+    if player_hand.value == 21:
+        playing = False
+        if dealer_hand.value == 21:
+            show_all_cards(player_hand,dealer_hand) # Show that the dealer has blackjack too!
+            push()
+        else:
+            blackjack(player_chips)
+
     while playing:
-        
+
         # Prompt for Player to Hit or Stand
         hit_or_stand(playing_deck,player_hand)
         
@@ -201,7 +215,7 @@ while True:
             break
 
     # If Player hasn't busted, play Dealer's hand until Dealer reaches 17
-    if player_hand.value <= 21:    
+    if player_hand.value < 21:    
         while dealer_hand.value < 17:
             hit(playing_deck,dealer_hand)
 
