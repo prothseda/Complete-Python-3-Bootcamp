@@ -154,10 +154,19 @@ def push():
     print(f'\nPush! No winning bet.')
 
 
+'''
+Initialize game outside of the while loop to:
+    1. Only show the welcome message once.
+    2. Initialize the Player's chips object once.
+'''
+# Print an opening statement
+print(f'\nWelcome to Blackjack!')
+input('\nPlease any key to begin.')
+
+# Set up the Player's chips
+player_chips = Chips()
+
 while True:
-    # Print an opening statement
-    print(f'\nWelcome to Blackjack!')
-    input('\nPlease any key to begin.')
     
     # Create & shuffle the deck, deal two cards to each player
     playing_deck = Deck()
@@ -171,11 +180,8 @@ while True:
     player_hand.add_card(playing_deck.deal())
     dealer_hand.add_card(playing_deck.deal())
         
-    # Set up the Player's chips
-    player_chips = Chips()
-    print(player_chips)
-    
     # Prompt the Player for their bet
+    print(player_chips)
     place_bet(player_chips)
     
     # Show cards (but keep one dealer card hidden)
@@ -195,8 +201,8 @@ while True:
             break
 
     # If Player hasn't busted, play Dealer's hand until Dealer reaches 17
-    while True:
-        if dealer_hand.value < 17:
+    if player_hand.value <= 21:    
+        while dealer_hand.value < 17:
             hit(playing_deck,dealer_hand)
 
         # Show all cards
@@ -205,17 +211,15 @@ while True:
         # Run different winning scenarios
         if dealer_hand.value > 21:
             dealer_busts(player_chips)
-        elif dealer_hand.value >= 17:
-            if dealer_hand.value > player_hand.value:
-                dealer_wins(player_chips)
-                break
-            elif dealer_hand.value < player_hand.value:
-                player_wins(player_chips)
-                break
-            else:
-                push()
-                break
-    
+
+        elif dealer_hand.value > player_hand.value:
+            dealer_wins(player_chips)
+
+        elif dealer_hand.value < player_hand.value:
+            player_wins(player_chips)
+        else:
+            push()
+
     # Inform Player of their chips total 
     print(player_chips)
 
@@ -230,11 +234,12 @@ while True:
                 break
             else:
                 continue
-    if play_again == 'N':
-        break
-    else:
+    if play_again == 'Y':
         playing = True
-
+        continue
+    else:
+        print('Thanks for playing!')
+        break
 
 
 
